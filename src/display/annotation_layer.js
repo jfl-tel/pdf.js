@@ -177,6 +177,7 @@ class AnnotationElement {
     this.svgFactory = parameters.svgFactory;
     this.annotationStorage = parameters.annotationStorage;
     this.enableScripting = parameters.enableScripting;
+    this.enableXfa = parameters.enableXfa;
     this.hasJSActions = parameters.hasJSActions;
     this._fieldObjects = parameters.fieldObjects;
     this.parent = parameters.parent;
@@ -2055,6 +2056,8 @@ class PopupElement {
 
   #wasVisible = false;
 
+  #enableXfa = false;
+
   constructor({
     container,
     color,
@@ -2067,6 +2070,7 @@ class PopupElement {
     rect,
     parentRect,
     open,
+    enableXfa,
   }) {
     this.#container = container;
     this.#titleObj = titleObj;
@@ -2077,7 +2081,7 @@ class PopupElement {
     this.#rect = rect;
     this.#parentRect = parentRect;
     this.#elements = elements;
-
+    this.#enableXfa = enableXfa;
     // The modification date is shown in the popup instead of the creation
     // date if it is available and can be parsed correctly, which is
     // consistent with other viewers such as Adobe Acrobat.
@@ -2176,7 +2180,9 @@ class PopupElement {
 
     const contentsObj = this.#contentsObj;
     const richText = this.#richText;
+    const enableXfa = this.#enableXfa;
     if (
+      enableXfa &&
       richText?.str &&
       (!contentsObj?.str || contentsObj.str === richText.str)
     ) {
